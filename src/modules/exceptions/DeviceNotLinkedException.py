@@ -1,0 +1,2 @@
+class DeviceNotLinkedException(Exception):
+    pass
