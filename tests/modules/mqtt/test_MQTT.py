@@ -11,6 +11,7 @@ class TestMQTT:
         # Setup MQTT client once for this test module
         client = MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
         log = client.logger.handlers[0].baseFilename
+        client.testing_start()
         return {"client": client, "log": log}
 
     def test_connect(self, data):

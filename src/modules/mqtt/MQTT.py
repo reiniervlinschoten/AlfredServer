@@ -9,6 +9,11 @@ class MQTT:
         self.client = mqtt.Client()
         self.logger = setup_logger(__name__ + host)
         self.setup_client(host, username, password)
+
+    def start(self):
+        self.client.loop_forever()
+
+    def testing_start(self):
         self.client.loop_start()
 
     def setup_client(self, host, username, password):
