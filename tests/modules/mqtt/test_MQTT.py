@@ -41,7 +41,7 @@ class TestMQTT:
             message = data["client"].send(topic="/test{0}".format(str(i)), message="test{0}".format(str(i)))
             assert message == "/test{0} - test{0}".format(str(i))
 
-        time.sleep(0.05)  # Wait so everything can be handled and logged
+        time.sleep(0.5)  # Wait so everything can be handled and logged
         file = open(data["log"], 'r')
         loglines = list(file)[-50:]
 
