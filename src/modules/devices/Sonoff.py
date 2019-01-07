@@ -72,6 +72,10 @@ class Sonoff:
     def ask_status(self):
         return self.comm_channel.send("/{0}/cmd".format(self.name), "status,gpio,12")
 
+    # SETTERS
+    def set_status(self, status):
+        self.status = status
+
     # GETTERS
     def get_name(self):
         return self.name
