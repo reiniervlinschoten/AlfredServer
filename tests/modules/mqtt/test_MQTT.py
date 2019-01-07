@@ -38,6 +38,7 @@ class TestMQTT:
         file.close()
 
     def test_receive_multiple_messages(self, data):
+        # TODO: figure out why this fails when all tests are ran
         for i in range(0, 50):
             message = data["client"].send(topic="/test{0}".format(str(i)), message="test{0}".format(str(i)))
             assert message == "/test{0} - test{0}".format(str(i))
