@@ -31,7 +31,8 @@ class TestSonoff:
             sonoff = Sonoff("sonoff{0}".format(i), "light", "livingroom", "111.111.1.{0}".format(i), client)
             data["unlinked"].append(sonoff)
 
-        return data
+        yield data
+        client.testing_stop()
 
     def test_turn_on_linked(self, data):
         for sonoff in data["linked"]:

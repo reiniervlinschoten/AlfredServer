@@ -26,7 +26,8 @@ class TestSonoffCommunication:
             data["linked"].append(sonoff)
             running_programs.DEVICES.append(sonoff)
 
-        return data
+        yield data
+        client.testing_stop()
 
     def test_turn_on_linked(self, data):
         for sonoff in data["linked"]:
