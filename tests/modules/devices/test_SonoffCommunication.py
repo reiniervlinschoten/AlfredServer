@@ -4,7 +4,7 @@ import time
 import pytest
 
 from src.modules.devices.Sonoff import Sonoff
-from tests.modules.data import keys
+from tests.modules.data import keys, running_programs
 from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
 
@@ -24,6 +24,7 @@ class TestSonoffCommunication:
             sonoff = Sonoff("sonoff{0}".format(i), "light", "livingroom", "111.111.1.{0}".format(i), client)
             sonoff.linked = True
             data["linked"].append(sonoff)
+            running_programs.DEVICES.append(sonoff)
 
         return data
 
@@ -43,6 +44,7 @@ class TestSonoffCommunication:
             })
             proper_format = "/{0}/status - ".format(sonoff.get_name()) + proper_message
             assert proper_format in last_line
+            assert sonoff.get_status() == 1
 
     def test_turn_off_linked(self, data):
         for sonoff in data["linked"]:
@@ -60,6 +62,7 @@ class TestSonoffCommunication:
             })
             proper_format = "/{0}/status - ".format(sonoff.get_name()) + proper_message
             assert proper_format in last_line
+            assert sonoff.get_status() == 0
 
     def test_switch_linked(self, data):
         for sonoff in data["linked"]:
@@ -81,6 +84,8 @@ class TestSonoffCommunication:
                     "mode": "output",
                     "state": 0
                 })
+                proper_status = 0
+
             elif old_state == 0:
                 proper_message = str({
                     "log": "GPIO 12 Set to 1",
@@ -89,6 +94,8 @@ class TestSonoffCommunication:
                     "mode": "output",
                     "state": 1
                 })
+                proper_status = 1
 
             proper_format = "/{0}/status - ".format(sonoff.get_name()) + proper_message
             assert proper_format in last_line
+            assert sonoff.get_status() == proper_status

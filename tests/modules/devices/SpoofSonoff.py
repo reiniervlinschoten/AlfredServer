@@ -1,4 +1,7 @@
+import ast
+
 from src.modules.mqtt.MQTT import MQTT
+from tests.modules.data import running_programs
 
 
 class SpoofSonoff(MQTT):
@@ -24,3 +27,11 @@ class SpoofSonoff(MQTT):
                                   'state': int(switch)
                                   })
             self.client.publish(return_topic, return_message)
+
+        elif "sonoff" in topic and "status" in topic:
+            name = topic.replace("status", "").replace("/", "")
+            for device in running_programs.DEVICES:
+                if device.get_name() == name:
+                    m = ast.literal_eval(message)  # Evaluate dict in string form
+                    device.set_status(m["state"])
+
