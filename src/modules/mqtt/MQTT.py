@@ -36,14 +36,14 @@ class MQTT:
         # reconnect then subscriptions will be renewed.
         client.subscribe('#')
 
-    def on_disconnect(self, client, userdata, flags, rc):
+    def on_disconnect(self, client, userdata, flags, rc=0):
         self.logger.info("Disconnected with result code " + str(rc))
+        self.client.loop_stop()
 
     # FUNCTIONS FOR TESTING PURPOSES (NON-BLOCKING)
     def testing_start(self):
         self.client.loop_start()
 
     def testing_stop(self):
-        self.client.loop_stop()
         self.client.disconnect()
 

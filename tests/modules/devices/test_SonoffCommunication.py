@@ -12,7 +12,7 @@ class TestSonoffCommunication:
     """This class merely tests the Sonoff communication with a spoof sonoff created on the system. This Spoof Sonoff
     merely mimics the return messages that are being sent."""
 
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="class")
     def data(self):
         client = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
         log = client.logger.handlers[0].baseFilename

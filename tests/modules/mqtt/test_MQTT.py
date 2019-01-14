@@ -6,7 +6,7 @@ from tests.modules.data import keys
 
 
 class TestMQTT:
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="class")
     def data(self):
         # Setup MQTT client once for this test module
         client = MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
@@ -27,7 +27,7 @@ class TestMQTT:
 
     def test_receive_message(self, data):
         message = data["client"].send(topic="/testreceive", message="testreceive")
-        time.sleep(0.01)  # Wait so everything can be handled and logged
+        time.sleep(0.1)  # Wait so everything can be handled and logged
 
         file = open(data["log"], 'r')
         loglines = list(file)
@@ -39,12 +39,11 @@ class TestMQTT:
         file.close()
 
     def test_receive_multiple_messages(self, data):
-        # TODO: figure out why this fails when all tests are ran -> multiple MQTT brokers are running
         for i in range(0, 50):
             message = data["client"].send(topic="/test{0}".format(str(i)), message="test{0}".format(str(i)))
             assert message == "/test{0} - test{0}".format(str(i))
 
-        time.sleep(2)  # Wait so everything can be handled and logged
+        time.sleep(1)  # Wait so everything can be handled and logged
         file = open(data["log"], 'r')
         loglines = list(file)[-50:]
 

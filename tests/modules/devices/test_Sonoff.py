@@ -14,7 +14,7 @@ class TestSonoff:
     It also looks at error handling when the objects are not online. HOWEVER: it does not look at the receiving end
     of the Sonoff, nor can it look at state changing."""
 
-    @pytest.fixture(scope="module")
+    @pytest.fixture(scope="class")
     def data(self):
         client = MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
         log = client.logger.handlers[0].baseFilename
