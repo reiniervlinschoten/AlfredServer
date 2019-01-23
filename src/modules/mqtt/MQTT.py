@@ -1,11 +1,11 @@
 import paho.mqtt.client as mqtt
 
-from src.modules.communicationcentre.messagehandler import handle_message
 from src.modules.logging.logger import setup_logger
 
 
 class MQTT:
-    def __init__(self, host, username, password):
+    def __init__(self, host, username, password, main=None):
+        self.main = main
         self.client = mqtt.Client()
         self.logger = setup_logger(__name__ + host)
         self.setup_client(host, username, password)
@@ -28,7 +28,8 @@ class MQTT:
         topic = msg.topic
         message = str(msg.payload, "UTF-8")
         self.logger.info("{0} - {1}".format(topic, message))
-        handle_message(topic, message)
+        if self.main is not None:  # Only in production and integrated testing environment, main is not None
+            self.main.handle_message(topic, message)
 
     def on_connect(self, client, userdata, flags, rc):
         self.logger.info("Connected with result code " + str(rc))
