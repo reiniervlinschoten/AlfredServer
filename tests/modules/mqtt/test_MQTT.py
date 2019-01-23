@@ -1,19 +1,12 @@
 import time
 import pytest
 
-from src.modules.mqtt.MQTT import MQTT
-from tests.modules.data import keys
-
 
 class TestMQTT:
     @pytest.fixture(scope="class")
-    def data(self):
-        # Setup MQTT client once for this test module
-        client = MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
-        log = client.logger.handlers[0].baseFilename
-        client.testing_start()
-        yield {"client": client, "log": log}
-        client.testing_stop()
+    def data(self, mqtt):
+        log = mqtt.logger.handlers[0].baseFilename
+        yield {"client": mqtt, "log": log}
 
     def test_connect(self, data):
         file = open(data["log"], 'r')
