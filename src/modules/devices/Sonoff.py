@@ -27,7 +27,7 @@ def _error_decorator(func):
 
 class Sonoff:
     """Wrapper Object for Sonoff Device. Can be used to control Sonoff that has been flashed with ESPEASY."""
-    def __init__(self, name, device_type, group, ip, comm_channel=running_programs.MQTT_CLIENT):
+    def __init__(self, name, device_type, group, ip, comm_channel=None):
         self.name = name
         self.type = device_type
         self.group = group
@@ -75,6 +75,9 @@ class Sonoff:
     # SETTERS
     def set_status(self, status):
         self.status = status
+
+    def set_comm_channel(self, comm_channel):
+        self.comm_channel = comm_channel
 
     # GETTERS
     def get_name(self):

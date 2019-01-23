@@ -1,32 +1,44 @@
+import time
+
 import pytest
 
 from src.modules.Main import Main
+from src.modules.devices.Sonoff import Sonoff
 from tests.modules.data import keys
+from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
 
 class TestMain:
     @pytest.fixture(scope="class")
     def data(self):
         data = Main()
-        data.setup_mqtt(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
+        data.setup_mqtt_testing(SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD))
         self.add_device(data)
-
-        data.mqtt.testing_start()
         yield data
         data.mqtt.testing_stop()
 
     def test_mqtt_init(self, data):
         assert data.mqtt
 
+    def test_add_sonoff(self, data):
+        assert len(data.devices) == 1
+        assert data.devices[0].name == "sonoff0"
+
     def test_handle_message_sonoff(self, data):
-        # TODO
-        pass
+        data.mqtt.send("/sonoff0/cmd", "gpio,12,1")
+        time.sleep(0.1)
+        assert data.devices[0].get_status() == 1
+        data.mqtt.send("/sonoff0/cmd", "gpio,12,0")
+        time.sleep(0.1)
+        assert data.devices[0].get_status() == 0
+        data.mqtt.send("/sonoff0/cmd", "gpio,12,0")
+        time.sleep(0.1)
+        assert data.devices[0].get_status() == 0
 
     # Fixture helper functions
     def add_device(self, data):
-        data.add_device(type="sonoff", information={"name": "sonoff0",
-                                                    "device_type": "light",
-                                                    "group": "livingroom",
-                                                    "ip": "111.111.1.0",
-                                                    "comm_channel": data.mqtt})
-        data.devices["sonoff0"].linked = True  # Fake working sonoff
+        new_device = Sonoff(name="sonoff0", device_type="light", group="livingroom", ip="111.111.1.0")
+        new_device.linked = True
+        data.add_device(new_device)
+
+
