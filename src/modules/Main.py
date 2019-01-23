@@ -25,5 +25,5 @@ class Main:
     # Testing functions
     def setup_mqtt_testing(self, mqtt_object):
         self.mqtt = mqtt_object
-        self.mqtt.testing_start()
+        self.mqtt.start()
         self.logger.info("MQTT Listening started in test mode")

@@ -16,7 +16,7 @@ class TestSonoffCommunication:
     def data(self):
         client = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
         log = client.logger.handlers[0].baseFilename
-        client.testing_start()
+        client.start()
 
         data = {"linked": [], "log": log}
 
@@ -27,7 +27,7 @@ class TestSonoffCommunication:
             running_programs.DEVICES.append(sonoff)
 
         yield data
-        client.testing_stop()
+        client.stop()
 
     def test_turn_on_linked(self, data):
         for sonoff in data["linked"]:

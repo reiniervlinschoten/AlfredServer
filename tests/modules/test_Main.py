@@ -15,15 +15,15 @@ class TestMain:
         data = Main()
         # Setup a SpoofSonoff to return the proper messages
         spoof = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
-        spoof.testing_start()
+        spoof.start()
 
         data.setup_mqtt_testing(MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD))
         self.add_device(data)
 
         yield data
 
-        data.mqtt.testing_stop()
-        spoof.testing_stop()
+        data.mqtt.stop()
+        spoof.stop()
 
     def test_mqtt_init(self, data):
         assert data.mqtt

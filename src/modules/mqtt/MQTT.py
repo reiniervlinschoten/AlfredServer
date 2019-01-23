@@ -11,7 +11,10 @@ class MQTT:
         self.main = None
 
     def start(self):
-        self.client.loop_forever()
+        self.client.loop_start()
+
+    def stop(self):
+        self.client.disconnect()
 
     def setup_client(self, host, username, password):
         self.client.username_pw_set(username, password)
@@ -40,13 +43,6 @@ class MQTT:
     def on_disconnect(self, client, userdata, flags, rc=0):
         self.logger.info("Disconnected with result code " + str(rc))
         self.client.loop_stop()
-
-    # FUNCTIONS FOR TESTING PURPOSES (NON-BLOCKING)
-    def testing_start(self):
-        self.client.loop_start()
-
-    def testing_stop(self):
-        self.client.disconnect()
 
     # SETTERS
     def set_main(self, main):

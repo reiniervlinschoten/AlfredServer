@@ -9,9 +9,9 @@ from tests.modules.data import keys
 @pytest.fixture(scope="session")
 def mqtt():
     mqtt = MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
-    mqtt.testing_start()
+    mqtt.start()
     yield mqtt
-    mqtt.testing_stop()
+    mqtt.stop()
 
 
 @pytest.fixture(scope="session")
