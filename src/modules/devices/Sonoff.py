@@ -4,7 +4,6 @@ import bs4
 import requests
 from requests import RequestException
 
-from src.modules.data import running_programs
 from src.modules.exceptions.DeviceNotLinkedException import DeviceNotLinkedException
 
 
@@ -27,12 +26,12 @@ def _error_decorator(func):
 
 class Sonoff:
     """Wrapper Object for Sonoff Device. Can be used to control Sonoff that has been flashed with ESPEASY."""
-    def __init__(self, name, device_type, group, ip, comm_channel=None):
+    def __init__(self, name, device_type, group, ip):
         self.name = name
         self.type = device_type
         self.group = group
         self.ip = ip
-        self.comm_channel = comm_channel
+        self.main = None
         self.status = None
         self.linked = False
         self.connect()
@@ -55,11 +54,11 @@ class Sonoff:
 
     @_error_decorator
     def turn_on(self):
-        return self.comm_channel.send("/{0}/cmd".format(self.name), "gpio,12,1")
+        return self.main.mqtt.send("/{0}/cmd".format(self.name), "gpio,12,1")
 
     @_error_decorator
     def turn_off(self):
-        return self.comm_channel.send("/{0}/cmd".format(self.name), "gpio,12,0")
+        return self.main.mqtt.send("/{0}/cmd".format(self.name), "gpio,12,0")
 
     @_error_decorator
     def switch(self):
@@ -70,14 +69,16 @@ class Sonoff:
 
     @_error_decorator
     def ask_status(self):
-        return self.comm_channel.send("/{0}/cmd".format(self.name), "status,gpio,12")
+        return self.main.mqtt.send("/{0}/cmd".format(self.name), "status,gpio,12")
 
     # SETTERS
     def set_status(self, status):
         self.status = status
 
-    def set_comm_channel(self, comm_channel):
-        self.comm_channel = comm_channel
+    def set_main(self, main):
+        """Adds a main, the object that does all communication between modules.
+        Do not call this yourself, it will be handled when a device is added to main"""
+        self.main = main
 
     # GETTERS
     def get_name(self):

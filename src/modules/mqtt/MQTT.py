@@ -4,11 +4,11 @@ from src.modules.logging.logger import setup_logger
 
 
 class MQTT:
-    def __init__(self, host, username, password, main=None):
-        self.main = main
+    def __init__(self, host, username, password):
         self.client = mqtt.Client()
         self.logger = setup_logger(__name__ + host)
         self.setup_client(host, username, password)
+        self.main = None
 
     def start(self):
         self.client.loop_forever()
@@ -47,4 +47,8 @@ class MQTT:
 
     def testing_stop(self):
         self.client.disconnect()
+
+    # SETTERS
+    def set_main(self, main):
+        self.main = main
 

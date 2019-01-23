@@ -9,13 +9,13 @@ class Main:
         self.devices = []
 
     def setup_mqtt(self, mqtt_object):
-        mqtt_object.main = self
+        mqtt_object.set_main(self)
         self.mqtt = mqtt_object
         self.mqtt.start()
         self.logger.info("MQTT Listening started")
 
     def add_device(self, device_object):
-        device_object.set_comm_channel(self.mqtt)
+        device_object.set_main(self)
         self.devices.append(device_object)
         self.logger.info("{0} was added to the devices".format(device_object.name))
 
