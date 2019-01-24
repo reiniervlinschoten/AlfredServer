@@ -1,16 +1,13 @@
 import functools
-
 import bs4
 import requests
 from requests import RequestException
 
 from src.modules.exceptions.DeviceNotLinkedException import DeviceNotLinkedException
-
-
-# DECORATORS
 from src.modules.logging.logger import setup_logger
 
 
+# DECORATORS
 def _error_decorator(func):
     @functools.wraps(func)
     def decorate(*args, **kwargs):
@@ -29,6 +26,7 @@ def _error_decorator(func):
 
 
 class Sonoff:
+    # TODO: Recheck connection once in a while
     """Wrapper Object for Sonoff Device. Can be used to control Sonoff that has been flashed with ESPEASY."""
     def __init__(self, name, device_type, group, ip):
         self.name = name
@@ -37,25 +35,32 @@ class Sonoff:
         self.ip = ip
         self.main = None
         self.status = None
-        self.linked = False
+        self.linked = None
         self.logger = setup_logger(__name__ + name)
         self.connect()
 
     def connect(self):
         """Tries to find the named Sonoff device at the given ip"""
         try:
+            # Try to connect to the Sonoff on the network and checks its name
             link = requests.get('http://{0}'.format(self.ip), timeout=1)
             title = bs4.BeautifulSoup(link.content).title
+
+            # Check whether the given name is the name of the device
             if title != self.name:
-                """Handles typos in name"""
-                print('Given name: {0} and found name on the ip: {1} do not match. '
-                      'Converting name to found name!'.format(self.name, title))
+                self.logger.debug('Given name: {0} and found name on the ip: {1} do not match. '
+                                  'Converting name to found name!'.format(self.name, title))
                 self.name = title
+
+            # Set the device to linked and sends a request to initialize its status
             self.linked = True
             self.ask_status()
+
+        # Handles problem when the device is not found on the network
         except RequestException:
             """When the request times out, no Sonoff is at the given ip"""
-            print("No device was found on given ip: {0}".format(self.ip))
+            self.logger.debug("No Sonoff found at given ip: {0}".format(self.ip))
+            self.linked = False
 
     @_error_decorator
     def turn_on(self):
