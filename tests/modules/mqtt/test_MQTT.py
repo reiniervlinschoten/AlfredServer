@@ -4,8 +4,8 @@ import pytest
 
 class TestMQTT:
     @pytest.fixture(scope="class")
-    def data(self, mqtt, log):
-        yield {"client": mqtt, "log": log}
+    def data(self, mqtt, mqtt_log):
+        yield {"client": mqtt, "log": mqtt_log}
 
     def test_connect(self, data):
         file = open(data["log"], 'r')

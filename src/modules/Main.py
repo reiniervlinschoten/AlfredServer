@@ -21,9 +21,3 @@ class Main:
 
     def handle_message(self, topic, message):
         handle_message(topic, message, self)
-
-    # Testing functions
-    def setup_mqtt_testing(self, mqtt_object):
-        self.mqtt = mqtt_object
-        self.mqtt.start()
-        self.logger.info("MQTT Listening started in test mode")

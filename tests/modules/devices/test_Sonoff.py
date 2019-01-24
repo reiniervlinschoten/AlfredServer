@@ -11,8 +11,11 @@ class TestSonoff:
     of the Sonoff, nor can it look at state changing."""
 
     @pytest.fixture(scope="class")
-    def data(self, linked_sonoff, unlinked_sonoff, log, give_sonoff_parent):
-        data = {"linked": linked_sonoff, "unlinked": unlinked_sonoff, "log": log}
+    def data(self, main, mqtt, mqtt_log, linked_sonoff, unlinked_sonoff):
+        main.setup_mqtt(mqtt)
+        for sonoff in (linked_sonoff + unlinked_sonoff):
+            main.add_device(sonoff)
+        data = {"linked": linked_sonoff, "unlinked": unlinked_sonoff, "log": mqtt_log}
         yield data
 
     def test_turn_on_linked(self, data):

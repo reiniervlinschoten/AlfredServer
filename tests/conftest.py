@@ -6,7 +6,7 @@ from src.modules.mqtt.MQTT import MQTT
 from tests.modules.data import keys
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def mqtt():
     mqtt = MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
     mqtt.start()
@@ -14,8 +14,8 @@ def mqtt():
     mqtt.stop()
 
 
-@pytest.fixture(scope="session")
-def log(mqtt):
+@pytest.fixture(scope="class")
+def mqtt_log(mqtt):
     log = mqtt.logger.handlers[0].baseFilename
     yield log
 
@@ -45,13 +45,10 @@ def unlinked_sonoff():
     yield unlinked_sonoff
 
 
-@pytest.fixture(scope="session")
-def give_sonoff_parent(mqtt, linked_sonoff, unlinked_sonoff):
+@pytest.fixture(scope="class")
+def main():
     main = Main()
-    main.setup_mqtt_testing(mqtt)
-    for sonoff in (linked_sonoff + unlinked_sonoff):
-        main.add_device(sonoff)
-    yield give_sonoff_parent
+    yield main
 
 
 @pytest.fixture(scope="session")
