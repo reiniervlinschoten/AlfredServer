@@ -3,6 +3,9 @@ import time
 
 import pytest
 
+from tests.modules.data import keys
+from tests.modules.devices.SpoofSonoff import SpoofSonoff
+
 
 class TestSonoffCommunication:
     """This class merely tests the Sonoff communication with a spoof sonoff created on the system. This Spoof Sonoff
@@ -10,12 +13,19 @@ class TestSonoffCommunication:
 
     @pytest.fixture(scope="class")
     def data(self, mqtt, mqtt_log, main, linked_sonoff):
+        spoof_sonoff = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
+        spoof_sonoff.start()
+        spoof_sonoff.set_main(main)
+
         main.setup_mqtt(mqtt)
+
         for sonoff in linked_sonoff:
             main.add_device(sonoff)
 
         data = {"linked": linked_sonoff, "log": mqtt_log}
+
         yield data
+        spoof_sonoff.stop()
 
     def test_turn_on_linked(self, data):
         for sonoff in data["linked"]:

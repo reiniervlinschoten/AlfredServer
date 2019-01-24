@@ -4,7 +4,6 @@ from src.modules.Main import Main
 from src.modules.devices.Sonoff import Sonoff
 from src.modules.mqtt.MQTT import MQTT
 from tests.modules.data import keys
-from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
 
 @pytest.fixture(scope="class")
@@ -50,12 +49,3 @@ def unlinked_sonoff():
 def main():
     main = Main()
     yield main
-
-
-@pytest.fixture(scope="session")
-def spoof_sonoff(main):
-    spoof_sonoff = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
-    spoof_sonoff.start()
-    spoof_sonoff.set_main(main)
-    yield spoof_sonoff
-    spoof_sonoff.stop()

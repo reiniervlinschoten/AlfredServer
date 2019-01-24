@@ -1,29 +1,13 @@
 import time
-
 import pytest
 
-from src.modules.Main import Main
 from src.modules.devices.Sonoff import Sonoff
-from src.modules.mqtt.MQTT import MQTT
-from tests.modules.data import keys
-from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
 
 class TestMain:
     @pytest.fixture(scope="class")
     def data(self):
-        data = Main()
-        # Setup a SpoofSonoff to return the proper messages
-        spoof = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
-        spoof.start()
-
-        data.setup_mqtt_testing(MQTT(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD))
-        self.add_device(data)
-
-        yield data
-
-        data.mqtt.stop()
-        spoof.stop()
+        pass
 
     def test_mqtt_init(self, data):
         assert data.mqtt
