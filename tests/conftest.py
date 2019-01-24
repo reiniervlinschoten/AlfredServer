@@ -52,9 +52,10 @@ def main():
     yield main
 
 
-@pytest.fixture(scope="class")
-def spoof_sonoff():
+@pytest.fixture(scope="session")
+def spoof_sonoff(main):
     spoof_sonoff = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
     spoof_sonoff.start()
+    spoof_sonoff.set_main(main)
     yield spoof_sonoff
     spoof_sonoff.stop()

@@ -9,9 +9,8 @@ class TestSonoffCommunication:
     merely mimics the return messages that are being sent."""
 
     @pytest.fixture(scope="class")
-    def data(self, mqtt, mqtt_log, main, linked_sonoff, spoof_sonoff):
+    def data(self, mqtt, mqtt_log, main, linked_sonoff):
         main.setup_mqtt(mqtt)
-        spoof_sonoff.set_main(main)
         for sonoff in linked_sonoff:
             main.add_device(sonoff)
 

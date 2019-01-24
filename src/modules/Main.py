@@ -11,8 +11,6 @@ class Main:
     def setup_mqtt(self, mqtt_object):
         mqtt_object.set_main(self)
         self.mqtt = mqtt_object
-        self.mqtt.start()
-        self.logger.info("MQTT Listening started")
 
     def add_device(self, device_object):
         device_object.set_main(self)

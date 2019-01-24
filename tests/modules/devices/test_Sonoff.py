@@ -21,10 +21,10 @@ class TestSonoff:
     def test_turn_on_linked(self, data):
         for sonoff in data["linked"]:
             message = sonoff.turn_on()
-            time.sleep(0.01)  # Wait so everything can be handled and logged
+            time.sleep(0.05)  # Wait so everything can be handled and logged
             file = open(data["log"], 'r')
             loglines = list(file)
-            last_line = loglines[-1]  # Gets the last message in the loglines
+            last_line = loglines[-2]  # Gets the second to last message in the loglines, last message is Sonoff reaction
             proper_format = "/{0}/cmd - gpio,12,1".format(sonoff.get_name())
             assert message == proper_format
             assert message in last_line
@@ -32,10 +32,10 @@ class TestSonoff:
     def test_turn_off_linked(self, data):
         for sonoff in data["linked"]:
             message = sonoff.turn_off()
-            time.sleep(0.01)  # Wait so everything can be handled and logged
+            time.sleep(0.05)  # Wait so everything can be handled and logged
             file = open(data["log"], 'r')
             loglines = list(file)
-            last_line = loglines[-1]  # Gets the last message in the loglines
+            last_line = loglines[-2]  # Gets the second to last message in the loglines, last message is Sonoff reaction
             proper_format = "/{0}/cmd - gpio,12,0".format(sonoff.get_name())
             assert message == proper_format
             assert message in last_line
@@ -47,10 +47,10 @@ class TestSonoff:
             sonoff.status = old_state
 
             message = sonoff.switch()
-            time.sleep(0.01)  # Wait so everything can be handled and logged
+            time.sleep(0.05)  # Wait so everything can be handled and logged
             file = open(data["log"], 'r')
             loglines = list(file)
-            last_line = loglines[-1]  # Gets the last message in the loglines
+            last_line = loglines[-2]  # Gets the second to last message in the loglines, last message is Sonoff reaction
             proper_format = "/{0}/cmd - gpio,12,0".format(sonoff.get_name()) if old_state == 1 \
                 else "/{0}/cmd - gpio,12,1".format(sonoff.get_name())
             assert message == proper_format
