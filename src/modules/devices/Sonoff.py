@@ -8,6 +8,9 @@ from src.modules.exceptions.DeviceNotLinkedException import DeviceNotLinkedExcep
 
 
 # DECORATORS
+from src.modules.logging.logger import setup_logger
+
+
 def _error_decorator(func):
     @functools.wraps(func)
     def decorate(*args, **kwargs):
@@ -19,6 +22,7 @@ def _error_decorator(func):
                                                                                   self.type,
                                                                                   self.ip,
                                                                                   self.group)
+            self.logger.debug(error_message)
             raise DeviceNotLinkedException(error_message)
 
     return decorate
@@ -34,6 +38,7 @@ class Sonoff:
         self.main = None
         self.status = None
         self.linked = False
+        self.logger = setup_logger(__name__ + name)
         self.connect()
 
     def connect(self):
@@ -54,10 +59,12 @@ class Sonoff:
 
     @_error_decorator
     def turn_on(self):
+        self.logger.info("Sending message: Turn on")
         return self.main.mqtt.send("/{0}/cmd".format(self.name), "gpio,12,1")
 
     @_error_decorator
     def turn_off(self):
+        self.logger.info("Sending message: Turn off")
         return self.main.mqtt.send("/{0}/cmd".format(self.name), "gpio,12,0")
 
     @_error_decorator
@@ -69,6 +76,7 @@ class Sonoff:
 
     @_error_decorator
     def ask_status(self):
+        self.logger.info("Sending message: Ask status")
         return self.main.mqtt.send("/{0}/cmd".format(self.name), "status,gpio,12")
 
     # SETTERS
