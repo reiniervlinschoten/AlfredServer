@@ -42,13 +42,13 @@ class TestMain:
 
         # Send the proper message (spoofing an Alfred Client) and see if the system reacts
         main.mqtt.send("/devices/in/set/sonoff0", "on")
-        time.sleep(0.1)
+        time.sleep(0.05)
         assert test_device.get_status() == 1
         main.mqtt.send("/devices/in/set/sonoff0", "off")
-        time.sleep(0.1)
+        time.sleep(0.05)
         assert test_device.get_status() == 0
         main.mqtt.send("/devices/in/set/sonoff0", "on")
-        time.sleep(0.1)
+        time.sleep(0.05)
         assert test_device.get_status() == 1
 
     def test_handle_message_sonoff_ask_status(self, data, linked_sonoff, unlinked_sonoff):
@@ -57,10 +57,10 @@ class TestMain:
 
         for i in linked_sonoff:
             # Ask the status for the device
-            main.mqtt.send("/devices/in/set/{0}".format(i.name), "status?")
+            main.mqtt.send("/devices/in/ask/{0}".format(i.name), "status?")
 
             # Wait so everything can be handled and logged
-            time.sleep(0.01)
+            time.sleep(0.05)
 
             # Read the last line from the log file
             file = open(data["mqtt_log"], 'r')
@@ -71,10 +71,10 @@ class TestMain:
 
         for i in unlinked_sonoff:
             # Ask the status for the device
-            main.mqtt.send("/devices/in/set/{0}".format(i.name), "status?")
+            main.mqtt.send("/devices/in/ask/{0}".format(i.name), "status?")
 
             # Wait so everything can be handled and logged
-            time.sleep(0.01)
+            time.sleep(0.05)
 
             # Read the last line from the log file
             file = open(data["mqtt_log"], 'r')
@@ -105,13 +105,13 @@ class TestMain:
             main.mqtt.send("/devices/in/set/sonoff0", command)
 
             # Wait so everything can be handled and logged
-            time.sleep(0.01)
+            time.sleep(0.05)
 
             # Ask the Sonoff what its toggle status is
             main.mqtt.send("/devices/in/ask/sonoff0", "toggle?")
 
             # Wait so everything can be handled and logged
-            time.sleep(0.01)
+            time.sleep(0.05)
 
             # Read the last line from the log file
             file = open(data["mqtt_log"], 'r')
@@ -119,7 +119,7 @@ class TestMain:
             last_line = loglines[-1]
 
             assert proper_format in last_line
-            assert test_device.get_status == command_num
+            assert test_device.get_status() == command_num
 
 
 
