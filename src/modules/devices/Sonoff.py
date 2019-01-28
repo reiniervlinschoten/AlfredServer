@@ -3,8 +3,8 @@ import bs4
 import requests
 from requests import RequestException
 
+from src.modules.devices.Device import Device
 from src.modules.exceptions.DeviceNotLinkedException import DeviceNotLinkedException
-from src.modules.logging.logger import setup_logger
 
 
 # DECORATORS
@@ -25,19 +25,9 @@ def _error_decorator(func):
     return decorate
 
 
-class Sonoff:
+class Sonoff(Device):
     # TODO: Recheck connection once in a while
     """Wrapper Object for Sonoff Device. Can be used to control Sonoff that has been flashed with ESPEASY."""
-    def __init__(self, name, device_type, group, ip):
-        self.name = name
-        self.type = device_type
-        self.group = group
-        self.ip = ip
-        self.main = None
-        self.status = None
-        self.linked = None
-        self.logger = setup_logger(__name__ + name)
-        self.connect()
 
     def connect(self):
         """Tries to find the named Sonoff device at the given ip"""
@@ -83,31 +73,3 @@ class Sonoff:
     def ask_status(self):
         self.logger.info("Sending message: Ask status")
         return self.main.mqtt.send("/{0}/cmd".format(self.name), "status,gpio,12")
-
-    # SETTERS
-    def set_status(self, status):
-        self.status = status
-
-    def set_main(self, main):
-        """Adds a main, the object that does all communication between modules.
-        Do not call this yourself, it will be handled when a device is added to main"""
-        self.main = main
-
-    # GETTERS
-    def get_name(self):
-        return self.name
-
-    def get_type(self):
-        return self.type
-
-    def get_group(self):
-        return self.group
-
-    def get_ip(self):
-        return self.ip
-
-    def get_status(self):
-        return self.status
-
-    def get_linked(self):
-        return self.linked
