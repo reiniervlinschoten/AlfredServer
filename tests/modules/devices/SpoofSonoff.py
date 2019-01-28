@@ -51,13 +51,6 @@ class SpoofSonoff:
                                   })
             self.client.publish(return_topic, return_message)
 
-        elif "sonoff" in topic and "status" in topic:
-            name = topic.replace("status", "").replace("/", "")
-            for device in self.main.devices:
-                if device.get_name() == name:
-                    m = ast.literal_eval(message)  # Evaluate dict in string form
-                    device.set_status(m["state"])
-
     def on_connect(self, client, userdata, flags, rc):
         self.logger.info("Connected with result code " + str(rc))
         # Subscribing in on_connect() means that if we lose the connection and

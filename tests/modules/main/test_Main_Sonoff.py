@@ -2,7 +2,6 @@ import random
 import time
 import pytest
 
-from src.modules.devices.Sonoff import Sonoff
 from tests.modules.data import keys
 from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
@@ -67,7 +66,7 @@ class TestMain:
             file = open(data["mqtt_log"], 'r')
             loglines = list(file)
             last_line = loglines[-1]
-            proper_format = "devices/out/give/{0} - online".format(i.name)
+            proper_format = "/devices/out/give/{0} - online".format(i.name)
             assert proper_format in last_line
 
         for i in unlinked_sonoff:
