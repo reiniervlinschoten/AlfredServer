@@ -48,7 +48,7 @@ class Sonoff(Device):
 
         # Handles problem when the device is not found on the network
         except RequestException:
-            """When the request times out, no Sonoff is at the given ip"""
+            # When the request times out, no Sonoff is at the given ip
             self.logger.debug("No Sonoff found at given ip: {0}".format(self.ip))
             self.linked = False
 

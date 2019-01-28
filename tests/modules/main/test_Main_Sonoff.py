@@ -29,7 +29,7 @@ class TestMain:
         """Tests the integration of the Sonoff within Main"""
         # First find the device that we are working with
         for device in data.devices:
-            if device.type == "sonoff" and device.name == "sonoff0":
+            if device.brand == "sonoff" and device.name == "sonoff0":
                 test_device = device
 
         # Send the proper messages and see if the system reacts
