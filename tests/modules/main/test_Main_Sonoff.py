@@ -1,3 +1,4 @@
+import random
 import time
 import pytest
 
@@ -18,35 +19,109 @@ class TestMain:
         for sonoff in (linked_sonoff + unlinked_sonoff):
             main.add_device(sonoff)
 
-        yield main
+        # First find the device that we are working with
+        for device in main.devices:
+            if device.brand == "sonoff" and device.name == "sonoff0":
+                test_device = device
+
+        data = {"main": main, "test_device": test_device, "mqtt_log": mqtt_log}
+
+        yield data
+
         spoof_sonoff.stop()
 
     def test_add_sonoff(self, data):
         """Tests the adding of devices to Main"""
-        assert len(data.devices) == 10
+        main = data["main"]
+        assert len(main.devices) == 10
 
-    def test_handle_message_sonoff(self, data):
+    def test_handle_message_sonoff_on_off(self, data):
         """Tests the integration of the Sonoff within Main"""
-        # First find the device that we are working with
-        for device in data.devices:
-            if device.brand == "sonoff" and device.name == "sonoff0":
-                test_device = device
+        # Unpack data from fixture
+        main = data["main"]
+        test_device = data["test_device"]
 
-        # Send the proper messages and see if the system reacts
-        data.mqtt.send("/sonoff0/cmd", "gpio,12,1")
+        # Send the proper message (spoofing an Alfred Client) and see if the system reacts
+        main.mqtt.send("/devices/in/set/sonoff0", "on")
         time.sleep(0.1)
         assert test_device.get_status() == 1
-        data.mqtt.send("/sonoff0/cmd", "gpio,12,0")
+        main.mqtt.send("/devices/in/set/sonoff0", "off")
         time.sleep(0.1)
         assert test_device.get_status() == 0
-        data.mqtt.send("/sonoff0/cmd", "gpio,12,1")
+        main.mqtt.send("/devices/in/set/sonoff0", "on")
         time.sleep(0.1)
         assert test_device.get_status() == 1
 
-    # Fixture helper functions
-    def add_device(self, data):
-        new_device = Sonoff(name="sonoff0", device_type="light", group="livingroom", ip="111.111.1.0")
-        new_device.linked = True
-        data.add_device(new_device)
+    def test_handle_message_sonoff_ask_status(self, data, linked_sonoff, unlinked_sonoff):
+        # Unpack data from fixture
+        main = data["main"]
+
+        for i in linked_sonoff:
+            # Ask the status for the device
+            main.mqtt.send("/devices/in/set/{0}".format(i.name), "status?")
+
+            # Wait so everything can be handled and logged
+            time.sleep(0.01)
+
+            # Read the last line from the log file
+            file = open(data["mqtt_log"], 'r')
+            loglines = list(file)
+            last_line = loglines[-1]
+            proper_format = "devices/out/give/{0} - online".format(i.name)
+            assert proper_format in last_line
+
+        for i in unlinked_sonoff:
+            # Ask the status for the device
+            main.mqtt.send("/devices/in/set/{0}".format(i.name), "status?")
+
+            # Wait so everything can be handled and logged
+            time.sleep(0.01)
+
+            # Read the last line from the log file
+            file = open(data["mqtt_log"], 'r')
+            loglines = list(file)
+            last_line = loglines[-1]
+            proper_format = "devices/out/give/{0} - offline".format(i.name)
+            assert proper_format in last_line
+
+    def test_handle_message_sonoff_ask_toggle(self, data):
+        # Unpack data from fixture
+        main = data["main"]
+        test_device = data["test_device"]
+
+        for i in range(0, 5):
+            # Randomly initialize the message that is being sent to the Sonoff, and parametrize test data.
+            command_num = random.getrandbits(1)
+            if command_num == 1:
+                command = "on"
+                proper_format = "/devices/out/give/sonoff0 - on"
+            elif command_num == 0:
+                command = "off"
+                proper_format = "/devices/out/give/sonoff0 - off"
+            else:
+                command = "Error"
+                proper_format = "Something went wrong with setting base state"
+
+            # Set a testable status for the Sonoff
+            main.mqtt.send("/devices/in/set/sonoff0", command)
+
+            # Wait so everything can be handled and logged
+            time.sleep(0.01)
+
+            # Ask the Sonoff what its toggle status is
+            main.mqtt.send("/devices/in/ask/sonoff0", "toggle?")
+
+            # Wait so everything can be handled and logged
+            time.sleep(0.01)
+
+            # Read the last line from the log file
+            file = open(data["mqtt_log"], 'r')
+            loglines = list(file)
+            last_line = loglines[-1]
+
+            assert proper_format in last_line
+            assert test_device.get_status == command_num
+
+
 
 
