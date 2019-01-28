@@ -27,7 +27,8 @@ def linked_sonoff():
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
                         group="livingroom",
-                        ip="111.111.1.{0}".format(i))
+                        ip="111.111.1.{0}".format(i),
+                        brand="sonoff")
         sonoff.linked = True
         linked_sonoff.append(sonoff)
     yield linked_sonoff
@@ -40,7 +41,8 @@ def unlinked_sonoff():
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
                         group="livingroom",
-                        ip="111.111.1.{0}".format(i))
+                        ip="111.111.1.{0}".format(i),
+                        brand="sonoff")
         unlinked_sonoff.append(sonoff)
     yield unlinked_sonoff
 
