@@ -89,11 +89,10 @@ class TestSonoff:
             with pytest.raises(DeviceNotLinkedException) as e:
                 # Send message and initialize it's comparison
                 sonoff.turn_on()
-                proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.getname(),
-                                                                                             sonoff.gettype(),
-                                                                                             sonoff.getip(),
-                                                                                             sonoff.getgroup())
-
+                proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.get_name(),
+                                                                                             sonoff.get_type(),
+                                                                                             sonoff.get_ip(),
+                                                                                             sonoff.get_group())
                 # Get last log line for sonoff
                 sonoff_log = sonoff.logger.handlers[0].baseFilename
                 file = open(sonoff_log, 'r')
@@ -109,10 +108,10 @@ class TestSonoff:
             with pytest.raises(DeviceNotLinkedException) as e:
                 # Send message and initialize it's comparison
                 sonoff.turn_off()
-                proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.getname(),
-                                                                                             sonoff.gettype(),
-                                                                                             sonoff.getip(),
-                                                                                             sonoff.getgroup())
+                proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.get_name(),
+                                                                                             sonoff.get_type(),
+                                                                                             sonoff.get_ip(),
+                                                                                             sonoff.get_group())
 
                 # Get last log line for sonoff
                 sonoff_log = sonoff.logger.handlers[0].baseFilename
@@ -129,10 +128,10 @@ class TestSonoff:
             with pytest.raises(DeviceNotLinkedException) as e:
                 # Send message and initialize it's comparison
                 sonoff.switch()
-                proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.getname(),
-                                                                                             sonoff.gettype(),
-                                                                                             sonoff.getip(),
-                                                                                             sonoff.getgroup())
+                proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.get_name(),
+                                                                                             sonoff.get_type(),
+                                                                                             sonoff.get_ip(),
+                                                                                             sonoff.get_group())
 
                 # Get last log line for sonoff
                 sonoff_log = sonoff.logger.handlers[0].baseFilename

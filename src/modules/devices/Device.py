@@ -15,8 +15,11 @@ class Device:
         self.main = None
         self.status = None
         self.linked = None
-        self.logger = setup_logger(__name__ + name)
+        self.logger = self.setup_logger()
         self.connect()
+
+    def setup_logger(self):
+        return setup_logger(self.name)
 
     @abstractmethod
     def connect(self):

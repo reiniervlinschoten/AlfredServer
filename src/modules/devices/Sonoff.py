@@ -16,7 +16,7 @@ def _error_decorator(func):
             return func(*args, **kwargs)
         else:
             error_message = "{0} ({1}) at {2} in {3} could not be reached".format(self.name,
-                                                                                  self.type,
+                                                                                  self.device_type,
                                                                                   self.ip,
                                                                                   self.group)
             self.logger.debug(error_message)
