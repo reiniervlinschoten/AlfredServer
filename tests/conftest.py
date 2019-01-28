@@ -36,7 +36,7 @@ def linked_sonoff():
 @pytest.fixture(scope="session")
 def unlinked_sonoff():
     unlinked_sonoff = []
-    for i in range(6, 10):  # Spoof working Sonoff
+    for i in range(5, 10):  # Spoof working Sonoff
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
                         group="livingroom",
