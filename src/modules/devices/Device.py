@@ -37,6 +37,9 @@ class Device:
     def switch(self):
         pass
 
+    # COMPARATORS
+    # TODO
+
     # SETTERS
     def set_status(self, status):
         self.status = status
