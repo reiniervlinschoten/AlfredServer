@@ -35,7 +35,7 @@ class TestMain:
         assert len(main.devices) == 10
 
     def test_handle_message_sonoff_on_off(self, data):
-        """Tests the integration of the Sonoff within Main"""
+        """Tests whether the message for turning a Sonoff device on/off is properly handled"""
         # Unpack data from fixture
         main = data["main"]
         test_device = data["test_device"]
@@ -52,6 +52,7 @@ class TestMain:
         assert test_device.get_status() == 1
 
     def test_handle_message_sonoff_ask_status(self, data, linked_sonoff, unlinked_sonoff):
+        """Tests whether the message asking for Sonoff link status is properly handled"""
         # Unpack data from fixture
         main = data["main"]
 
@@ -84,6 +85,7 @@ class TestMain:
             assert proper_format in last_line
 
     def test_handle_message_sonoff_ask_toggle(self, data):
+        """Tests whether the request for the Sonoff toggle status is properly handled."""
         # Unpack data from fixture
         main = data["main"]
         test_device = data["test_device"]
@@ -122,6 +124,7 @@ class TestMain:
             assert test_device.get_status() == command_num
 
     def test_handle_message_sonoff_ask_devices(self, data):
+        """Tests if the broker returns the proper list of device dictionaries when asked by the client."""
         main = data["main"]
 
         # Ask the broker about the device list
@@ -136,6 +139,7 @@ class TestMain:
         last_line = loglines[-1]
 
         # Create the proper message that should be sent
+        proper_topic = "/devices/out/give"
         device_list_of_dict = []
         for device in main.devices:
             device_list_of_dict.append({"name": device.get_name(),
@@ -146,15 +150,8 @@ class TestMain:
                                         "linked": device.get_linked(),
                                         "status": device.get_status(),
                                         })
-        proper_topic = "/devices/out/give"
 
         assert proper_topic in last_line
 
         for device_dict in device_list_of_dict:
             assert str(device_dict) in last_line
-
-
-
-
-
-
