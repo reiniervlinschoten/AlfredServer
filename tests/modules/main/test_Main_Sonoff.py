@@ -2,6 +2,7 @@ import random
 import time
 import pytest
 
+from src.modules.devices.Sonoff import Sonoff
 from tests.modules.data import keys
 from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
@@ -163,10 +164,29 @@ class TestMain:
         # Check whether it is instantiated properly
         assert len(main.devices) == 10
 
-        # Try to add copies
-        for sonoff in (linked_sonoff + unlinked_sonoff):
+        for i in range(0, 5):  # Completely the same
+            sonoff = Sonoff(name="sonoff{0}".format(i),
+                            device_type="light",
+                            group="livingroom",
+                            ip="111.111.1.{0}".format(i),
+                            brand="sonoff")
+            main.add_device(sonoff)
+
+        for i in range(0, 5):  # Same name
+            sonoff = Sonoff(name="sonoff{0}".format(i),
+                            device_type="light",
+                            group="livingroom",
+                            ip="111.111.1.{0}".format(i+10),
+                            brand="sonoff")
+            main.add_device(sonoff)
+
+        for i in range(0, 5):  # Same ip
+            sonoff = Sonoff(name="sonoff{0}".format(i+10),
+                            device_type="light",
+                            group="livingroom",
+                            ip="111.111.1.{0}".format(i),
+                            brand="sonoff")
             main.add_device(sonoff)
 
         # Check if the copies are NOT added
         assert len(main.devices) == 10
-

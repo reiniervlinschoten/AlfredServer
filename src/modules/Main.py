@@ -13,9 +13,13 @@ class Main:
         self.mqtt = mqtt_object
 
     def add_device(self, device_object):
-        device_object.set_main(self)
-        self.devices.append(device_object)
-        self.logger.info("{0} was added to the devices".format(device_object.name))
+        if device_object not in self.devices:
+            device_object.set_main(self)
+            self.devices.append(device_object)
+            self.logger.info("{0} was added to the devices".format(device_object.name))
+        else:
+            self.logger.info("{0} was NOT added to the devices, already exists".format(device_object.name))
+
 
     def handle_message(self, topic, message):
         handle_message(topic, message, self)
