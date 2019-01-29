@@ -121,6 +121,40 @@ class TestMain:
             assert proper_format in last_line
             assert test_device.get_status() == command_num
 
+    def test_handle_message_sonoff_ask_devices(self, data):
+        main = data["main"]
+
+        # Ask the broker about the device list
+        main.mqtt.send("/devices/in/ask", "devices")
+
+        # Wait so everything can be handled and logged
+        time.sleep(0.05)
+
+        # Read the last line from the log file
+        file = open(data["mqtt_log"], 'r')
+        loglines = list(file)
+        last_line = loglines[-1]
+
+        # Create the proper message that should be sent
+        device_list_of_dict = []
+        for device in main.devices:
+            device_list_of_dict.append({"name": device.get_name(),
+                                        "device_type": device.get_type(),
+                                        "group": device.get_group(),
+                                        "ip": device.get_ip(),
+                                        "brand": device.get_brand(),
+                                        "linked": device.get_linked(),
+                                        "status": device.get_status(),
+                                        })
+        proper_topic = "/devices/out/give"
+
+        assert proper_topic in last_line
+
+        for device_dict in device_list_of_dict:
+            assert str(device_dict) in last_line
+
+
+
 
 
 
