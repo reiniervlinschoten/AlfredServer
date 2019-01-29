@@ -1,9 +1,7 @@
 import os
-
 import pytest
 
 from src.modules.database.Database import Database
-from src.modules.devices.Sonoff import Sonoff
 
 
 class TestDatabase:
