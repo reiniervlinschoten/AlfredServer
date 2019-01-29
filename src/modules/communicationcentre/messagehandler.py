@@ -13,7 +13,7 @@ def handle_message(topic, message, main):
        /devicename/command
        - devicename: The device name that has been given when setting up the Sonoff device
        - command: either cmd (to send a message to the device) or status (which is the device response)"""
-    
+
     # Read the topic into a list, and remove the first empty string
     topic = topic.split("/")[1:]
 
