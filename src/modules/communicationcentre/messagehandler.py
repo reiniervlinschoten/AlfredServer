@@ -7,7 +7,13 @@ def handle_message(topic, message, main):
        - Category: a submodule of Alfred, possibilities: devices
        - Direction: in (Client->Broker)/ out (Broker->Client)
        - Command: The chosen action, examples: set, ask, give
-       - (optional) Target: When a particular part of a submodule is targeted, example: a certain device"""
+       - (optional) Target: When a particular part of a submodule is targeted, example: a certain device
+
+       Topics from Sonoff devices have a different format pre-installed:
+       /devicename/command
+       - devicename: The device name that has been given when setting up the Sonoff device
+       - command: either cmd (to send a message to the device) or status (which is the device response)"""
+    
     # Read the topic into a list, and remove the first empty string
     topic = topic.split("/")[1:]
 
@@ -15,30 +21,34 @@ def handle_message(topic, message, main):
     if topic[1] == "in":
         # Handles data sent about devices from Client -> Broker
         if topic[0] == "devices":
-            # If length of topic is 3, then we are dealing with a general call about devices
-            if len(topic) == 3:
-                if topic[2] == "ask":
-                    if message == "devices":
-                        return_devices(main)
-
-            # If length of topic is 4, then we are dealing with a particular call to a device
-            elif len(topic) == 4:
-                target_device = find_device(main, topic)
-
-                if topic[2] == "set":
-                    set_device(message, target_device, topic)
-
-                elif topic[2] == "ask":
-                    if message == "status?":
-                        return_device_link_status(main, target_device)
-
-                    elif message == "toggle?":
-                        return_device_toggle(main, target_device)
+            handle_devices(main, message, topic)
 
     # Handle the data from Sonoff -> Broker
     if "sonoff" in topic[0]:
         if "status" in topic[1]:
             set_device_toggle(main, message, topic)
+
+
+def handle_devices(main, message, topic):
+    # If length of topic is 3, then we are dealing with a general call about devices
+    if len(topic) == 3:
+        if topic[2] == "ask":
+            if message == "devices":
+                return_devices(main)
+
+    # If length of topic is 4, then we are dealing with a particular call to a device
+    elif len(topic) == 4:
+        target_device = find_device(main, topic)
+
+        if topic[2] == "set":
+            set_device(message, target_device, topic)
+
+        elif topic[2] == "ask":
+            if message == "status?":
+                return_device_link_status(main, target_device)
+
+            elif message == "toggle?":
+                return_device_toggle(main, target_device)
 
 
 def set_device_toggle(main, message, topic):
