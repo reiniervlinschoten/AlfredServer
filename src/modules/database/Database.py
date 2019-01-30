@@ -42,18 +42,22 @@ class Database:
         self.logger.info("Setting up database")
         self.query(creation_string_devices)
 
-    def add_device(self, device):
+    def add_device(self, device_object):
         """Enters the given device in the database.
            Returns True when the device is registered.
            Returns False when the device could not be registered"""
         try:
-            self.query("INSERT INTO devices (name device_type location ip brand) VALUES (?,?,?,?,?)",
-                       placeholder=(device.name, device.device_type, device.location, device.ip, device.brand))
-            self.logger.info("Inserted device: {0} {1} {2} {3} {4} {5]".format(device.name,
-                                                                               device.device_type,
-                                                                               device.location,
-                                                                               device.ip,
-                                                                               device.brand))
+            self.query("INSERT INTO devices (name, device_type, location, ip, brand) VALUES (?,?,?,?,?)",
+                       placeholder=(device_object.name,
+                                    device_object.device_type,
+                                    device_object.location,
+                                    device_object.ip,
+                                    device_object.brand))
+            self.logger.info("Inserted device: {0} {1} {2} {3} {4}".format(device_object.name,
+                                                                           device_object.device_type,
+                                                                           device_object.location,
+                                                                           device_object.ip,
+                                                                           device_object.brand))
         except sqlite3.IntegrityError as e:
             self.logger.debug(str(e))
 
