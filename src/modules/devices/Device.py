@@ -6,10 +6,10 @@ from src.modules.logging.logger import setup_logger
 class Device:
     """This is the Device superclass, other devices can inherit from this to make sure that basic functionality
        is the same between all Devices."""
-    def __init__(self, name, device_type, group, ip, brand):
+    def __init__(self, name, device_type, location, ip, brand):
         self.name = name
         self.device_type = device_type
-        self.group = group
+        self.group = location
         self.ip = ip
         self.brand = brand
         self.main = None
@@ -60,8 +60,8 @@ class Device:
     def get_type(self):
         return self.device_type
 
-    def get_group(self):
-        return self.group
+    def get_location(self):
+        return self.location
 
     def get_ip(self):
         return self.ip

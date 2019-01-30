@@ -145,7 +145,7 @@ class TestMain:
         for device in main.devices:
             device_list_of_dict.append({"name": device.get_name(),
                                         "device_type": device.get_type(),
-                                        "group": device.get_group(),
+                                        "group": device.get_location(),
                                         "ip": device.get_ip(),
                                         "brand": device.get_brand(),
                                         "linked": device.get_linked(),

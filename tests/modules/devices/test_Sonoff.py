@@ -92,7 +92,7 @@ class TestSonoff:
                 proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.get_name(),
                                                                                              sonoff.get_type(),
                                                                                              sonoff.get_ip(),
-                                                                                             sonoff.get_group())
+                                                                                             sonoff.get_location())
                 # Get last log line for sonoff
                 sonoff_log = sonoff.logger.handlers[0].baseFilename
                 file = open(sonoff_log, 'r')
@@ -111,7 +111,7 @@ class TestSonoff:
                 proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.get_name(),
                                                                                              sonoff.get_type(),
                                                                                              sonoff.get_ip(),
-                                                                                             sonoff.get_group())
+                                                                                             sonoff.get_location())
 
                 # Get last log line for sonoff
                 sonoff_log = sonoff.logger.handlers[0].baseFilename
@@ -131,7 +131,7 @@ class TestSonoff:
                 proper_error_message = "{0} ({1}) at {2} in {3} could not be reached".format(sonoff.get_name(),
                                                                                              sonoff.get_type(),
                                                                                              sonoff.get_ip(),
-                                                                                             sonoff.get_group())
+                                                                                             sonoff.get_location())
 
                 # Get last log line for sonoff
                 sonoff_log = sonoff.logger.handlers[0].baseFilename

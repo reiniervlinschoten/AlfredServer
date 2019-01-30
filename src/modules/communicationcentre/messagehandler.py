@@ -103,7 +103,7 @@ def return_devices(main):
     for device in main.devices:
         new_message.append({"name": device.get_name(),
                             "device_type": device.get_type(),
-                            "group": device.get_group(),
+                            "group": device.get_location(),
                             "ip": device.get_ip(),
                             "brand": device.get_brand(),
                             "linked": device.get_linked(),
