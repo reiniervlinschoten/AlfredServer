@@ -1,22 +1,6 @@
-import os
-import pytest
-
-from src.modules.database.Database import Database
-
-
 class TestDatabase:
-    @pytest.fixture(scope="function")
-    def database(self):
-        if os.path.exists("tests"):
-            test_db_path = "tests/modules/database/test_database.db"
-        else:
-            test_db_path = "test_database.db"
-        database = Database(test_db_path)
-        yield database
-        os.remove(test_db_path)  # Remove testing database
-
     def test_setup_database_devices(self, database):
-        expected_columns = ["id", "name", "device_type", "group", "ip", "brand"]
+        expected_columns = ["id", "name", "device_type", "location", "ip", "brand"]
         table_exists_query = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='devices';"
         list_columns_query = "SELECT * FROM 'devices'"
 
@@ -34,13 +18,13 @@ class TestDatabase:
             counter += 1
             assert len(database.get_devices()) == counter
 
-    def test_devices_add_double(self, database, linked_sonoff):
+    def test_devices_add_double(self, database, linked_sonoff, same_sonoff, same_name_sonoff, same_ip_sonoff):
         counter = 0
         for sonoff in linked_sonoff:
             database.add_device(sonoff)
             counter += 1
             assert len(database.get_devices()) == counter
-        for sonoff in linked_sonoff:
+        for sonoff in (same_sonoff + same_name_sonoff + same_ip_sonoff):
             database.add_device(sonoff)
             assert len(database.get_devices()) == counter
 
