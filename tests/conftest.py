@@ -29,7 +29,7 @@ def linked_sonoff():
     for i in range(0, 5):  # Spoof working Sonoff
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
-                        group="livingroom",
+                        location="livingroom",
                         ip="111.111.1.{0}".format(i),
                         brand="sonoff")
         sonoff.linked = True
@@ -43,7 +43,7 @@ def unlinked_sonoff():
     for i in range(5, 10):  # Spoof working Sonoff
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
-                        group="livingroom",
+                        location="livingroom",
                         ip="111.111.1.{0}".format(i),
                         brand="sonoff")
         unlinked_sonoff.append(sonoff)
@@ -56,7 +56,7 @@ def same_sonoff():
     for i in range(0, 5):
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
-                        group="livingroom",
+                        location="livingroom",
                         ip="111.111.1.{0}".format(i),
                         brand="sonoff")
         same_sonoff.append(sonoff)
@@ -69,7 +69,7 @@ def same_name_sonoff():
     for i in range(0, 5):
         sonoff = Sonoff(name="sonoff{0}".format(i),
                         device_type="light",
-                        group="livingroom",
+                        location="livingroom",
                         ip="111.111.1.{0}".format(i + 10),
                         brand="sonoff")
         same_name_sonoff.append(sonoff)
@@ -82,7 +82,7 @@ def same_ip_sonoff():
     for i in range(0, 5):
         sonoff = Sonoff(name="sonoff{0}".format(i + 10),
                         device_type="light",
-                        group="livingroom",
+                        location="livingroom",
                         ip="111.111.1.{0}".format(i),
                         brand="sonoff")
         same_ip_sonoff.append(sonoff)

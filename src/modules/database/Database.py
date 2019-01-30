@@ -25,6 +25,7 @@ class Database:
             result = c.execute(command, placeholder).description
         else:
             self.logger.debug("Given return value {0} not understood".format(return_val))
+            result = False
         c.commit()
         c.close()
         return result

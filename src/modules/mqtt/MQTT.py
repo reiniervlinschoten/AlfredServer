@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 from src.modules.logging.logger import setup_logger
 
 
+# noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
 class MQTT:
     def __init__(self, host, username, password):
         self.client = mqtt.Client()

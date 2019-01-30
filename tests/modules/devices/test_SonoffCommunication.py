@@ -94,6 +94,10 @@ class TestSonoffCommunication:
                     "state": 1
                 })
                 proper_status = 1
+            else:
+                # Should not be happening but for code inspection purposes
+                proper_message = "error"
+                proper_status = 99
 
             proper_format = "/{0}/status - ".format(sonoff.get_name()) + proper_message
             assert proper_format in last_line

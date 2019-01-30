@@ -2,7 +2,6 @@ import random
 import time
 import pytest
 
-from src.modules.devices.Sonoff import Sonoff
 from tests.modules.data import keys
 from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
@@ -20,9 +19,11 @@ class TestMain:
             main.add_device(sonoff)
 
         # First find the device that we are working with
+        test_device = None
         for device in main.devices:
             if device.brand == "sonoff" and device.name == "sonoff0":
                 test_device = device
+                break
 
         data = {"main": main, "test_device": test_device, "mqtt_log": mqtt_log}
 

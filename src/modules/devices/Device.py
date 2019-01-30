@@ -9,7 +9,7 @@ class Device:
     def __init__(self, name, device_type, location, ip, brand):
         self.name = name
         self.device_type = device_type
-        self.group = location
+        self.location = location
         self.ip = ip
         self.brand = brand
         self.main = None

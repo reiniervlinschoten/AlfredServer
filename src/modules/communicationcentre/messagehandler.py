@@ -1,5 +1,7 @@
 import ast
 
+from src.modules.exceptions.DeviceNotFoundException import DeviceNotFoundException
+
 
 def handle_message(topic, message, main):
     """Topics for communicating between client and broker follow the following format:
@@ -91,10 +93,12 @@ def set_device(message, target_device, topic):
 def find_device(main, topic):
     # Find the proper device that has been targeted
     target_name = topic[3]
+    target_device = None
     for device in main.devices:
         if device.get_name() == target_name:
             target_device = device
             break
+        raise DeviceNotFoundException("Device was not found linked in main.")
     return target_device
 
 

@@ -20,6 +20,5 @@ class Main:
         else:
             self.logger.info("{0} was NOT added to the devices, already exists".format(device_object.name))
 
-
     def handle_message(self, topic, message):
         handle_message(topic, message, self)

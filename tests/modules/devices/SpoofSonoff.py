@@ -1,9 +1,9 @@
-import ast
 import paho.mqtt.client as mqtt
 
 from src.modules.logging.logger import setup_logger
 
 
+# noinspection PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal,PyUnusedLocal
 class SpoofSonoff:
     def __init__(self, host, username, password):
         self.client = mqtt.Client()
