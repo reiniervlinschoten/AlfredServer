@@ -97,7 +97,7 @@ def database():
         test_db_path = "test_database.db"
     database = Database(test_db_path)
     yield database
-    #os.remove(test_db_path)  # Remove testing database
+    os.remove(test_db_path)  # Remove testing database
 
 
 @pytest.fixture(scope="class")

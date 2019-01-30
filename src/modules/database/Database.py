@@ -41,14 +41,18 @@ class Database:
         self.logger.info("Setting up database")
         self.query(creation_string_devices)
 
-    def link_device(self, name, device_type, group, ip, brand):
+    def add_device(self, device):
         """Enters the given device in the database.
            Returns True when the device is registered.
            Returns False when the device could not be registered"""
         try:
             self.query("INSERT INTO devices (name device_type location ip brand) VALUES (?,?,?,?,?)",
-                       placeholder=(name, device_type, group, ip, brand))
-            self.logger.info("Inserted device: {0} {1} {2} {3} {4} {5]".format(name, device_type, group, ip, brand))
+                       placeholder=(device.name, device.device_type, device.location, device.ip, device.brand))
+            self.logger.info("Inserted device: {0} {1} {2} {3} {4} {5]".format(device.name,
+                                                                               device.device_type,
+                                                                               device.location,
+                                                                               device.ip,
+                                                                               device.brand))
         except sqlite3.IntegrityError as e:
             self.logger.debug(str(e))
 
