@@ -47,6 +47,45 @@ def unlinked_sonoff():
     yield unlinked_sonoff
 
 
+@pytest.fixture(scope="session")
+def same_sonoff():
+    same_sonoff = []
+    for i in range(0, 5):
+        sonoff = Sonoff(name="sonoff{0}".format(i),
+                        device_type="light",
+                        group="livingroom",
+                        ip="111.111.1.{0}".format(i),
+                        brand="sonoff")
+        same_sonoff.append(sonoff)
+    yield same_sonoff
+
+
+@pytest.fixture(scope="session")
+def same_name_sonoff():
+    same_name_sonoff = []
+    for i in range(0, 5):
+        sonoff = Sonoff(name="sonoff{0}".format(i),
+                        device_type="light",
+                        group="livingroom",
+                        ip="111.111.1.{0}".format(i + 10),
+                        brand="sonoff")
+        same_name_sonoff.append(sonoff)
+    yield same_name_sonoff
+
+
+@pytest.fixture(scope="session")
+def same_ip_sonoff():
+    same_ip_sonoff = []
+    for i in range(0, 5):
+        sonoff = Sonoff(name="sonoff{0}".format(i + 10),
+                        device_type="light",
+                        group="livingroom",
+                        ip="111.111.1.{0}".format(i),
+                        brand="sonoff")
+        same_ip_sonoff.append(sonoff)
+    yield same_ip_sonoff
+
+
 @pytest.fixture(scope="class")
 def main():
     main = Main()

@@ -157,35 +157,14 @@ class TestMain:
         for device_dict in device_list_of_dict:
             assert str(device_dict) in last_line
 
-    def test_handle_sonoff_copy(self, data, linked_sonoff, unlinked_sonoff):
+    def test_handle_sonoff_copy(self, data, same_sonoff, same_ip_sonoff, same_name_sonoff):
         """Tests to make sure every Sonoff is linked only once."""
         main = data["main"]
 
         # Check whether it is instantiated properly
         assert len(main.devices) == 10
 
-        for i in range(0, 5):  # Completely the same
-            sonoff = Sonoff(name="sonoff{0}".format(i),
-                            device_type="light",
-                            group="livingroom",
-                            ip="111.111.1.{0}".format(i),
-                            brand="sonoff")
-            main.add_device(sonoff)
-
-        for i in range(0, 5):  # Same name
-            sonoff = Sonoff(name="sonoff{0}".format(i),
-                            device_type="light",
-                            group="livingroom",
-                            ip="111.111.1.{0}".format(i+10),
-                            brand="sonoff")
-            main.add_device(sonoff)
-
-        for i in range(0, 5):  # Same ip
-            sonoff = Sonoff(name="sonoff{0}".format(i+10),
-                            device_type="light",
-                            group="livingroom",
-                            ip="111.111.1.{0}".format(i),
-                            brand="sonoff")
+        for sonoff in (same_sonoff + same_ip_sonoff + same_name_sonoff):
             main.add_device(sonoff)
 
         # Check if the copies are NOT added
