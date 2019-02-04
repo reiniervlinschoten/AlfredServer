@@ -63,5 +63,26 @@ class Database:
 
     def get_devices(self):
         """Returns a list of tuples of all devices."""
-        self.logger.info("Returning all devices from database")
-        return self.query("SELECT name, device_type, location, ip, brand FROM 'devices'")
+        devices = self.query("SELECT name, device_type, location, ip, brand FROM 'devices'")
+        self.logger.info("Devices: {0}".format(devices))
+        return devices
+
+    def remove_device(self, device_object):
+        in_db = self.search_device_name(device_object)
+        if in_db:
+            self.query("DELETE FROM devices WHERE name = ?",
+                       placeholder=(device_object.name,))
+            self.logger.info("Removed: {0}".format(device_object.name))
+        else:
+            self.logger.info("Not in database, so not removed: {0}".format(device_object.name))
+
+    def search_device_name(self, device_object):
+        """Searches for device with given name in the database."""
+        device = self.query("SELECT name, device_type, location, ip, brand FROM devices WHERE name = ?",
+                            placeholder=(device_object.name,))
+        if len(device) == 1:
+            in_db = True
+        else:
+            in_db = False
+        self.logger.info("Device {0} in database: {1}".format(device_object.name, str(in_db)))
+        return in_db

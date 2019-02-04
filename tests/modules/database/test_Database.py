@@ -11,7 +11,7 @@ class TestDatabase:
         list_columns = [column[0] for column in columns]
         assert list_columns == expected_columns
 
-    def test_devices(self, database, linked_sonoff):
+    def test_add_devices(self, database, linked_sonoff):
         counter = 0
         for sonoff in linked_sonoff:
             database.add_device(sonoff)
@@ -28,3 +28,45 @@ class TestDatabase:
             database.add_device(sonoff)
             assert len(database.get_devices()) == counter
 
+    def test_search_device(self, database, linked_sonoff):
+        for sonoff in linked_sonoff:
+            database.add_device(sonoff)
+        for sonoff in linked_sonoff:
+            assert database.search_device_name(sonoff)
+
+    def test_device_remove(self, database, linked_sonoff):
+        for sonoff in linked_sonoff:
+            database.add_device(sonoff)
+            assert database.search_device_name(sonoff)
+
+        assert len(database.get_devices()) == 5
+
+        test_device = None
+        for device in linked_sonoff:
+            if device.brand == "sonoff" and device.name == "sonoff0":
+                test_device = device
+                break
+
+        database.remove_device(test_device)
+        assert len(database.get_devices()) == 4
+        assert not database.search_device_name(test_device)
+
+    def test_device_remove_double(self, database, linked_sonoff):
+        for sonoff in linked_sonoff:
+            database.add_device(sonoff)
+
+        assert len(database.get_devices()) == 5
+
+        test_device = None
+        for device in linked_sonoff:
+            if device.brand == "sonoff" and device.name == "sonoff0":
+                test_device = device
+                break
+
+        database.remove_device(test_device)
+        assert len(database.get_devices()) == 4
+        assert not database.search_device_name(test_device)
+
+        database.remove_device(test_device)
+        assert len(database.get_devices()) == 4
+        assert not database.search_device_name(test_device)
