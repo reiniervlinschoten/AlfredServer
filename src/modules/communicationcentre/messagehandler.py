@@ -1,5 +1,6 @@
 import ast
 
+from src.modules.devices.Sonoff import Sonoff
 from src.modules.exceptions.DeviceNotFoundException import DeviceNotFoundException
 
 
@@ -24,11 +25,29 @@ def handle_message(topic, message, main):
         # Handles data sent about devices from Client -> Broker
         if topic[0] == "devices":
             handle_devices(main, message, topic)
+        elif topic[0] == "database":
+            handle_database(main, message, topic)
 
     # Handle the data from Sonoff -> Broker
     if "sonoff" in topic[0]:
         if "status" in topic[1]:
             set_device_toggle(main, message, topic)
+
+def handle_database(main, message, topic):
+    if topic[2] == "add":
+        device = create_device(message)
+        main.add_new_device(device)
+    elif topic[2] == "remove":
+        device = create_device(message)
+        main.remove_device(device)
+
+def create_device(message):
+    message = ast.literal_eval(message)
+    device = None
+    if message["brand"] == "sonoff":
+        device = Sonoff(name=message["name"], device_type=message["device_type"], location=message["location"],
+                        ip=message["ip"], brand="sonoff")
+    return device
 
 
 def handle_devices(main, message, topic):

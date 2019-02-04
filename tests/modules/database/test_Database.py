@@ -32,12 +32,12 @@ class TestDatabase:
         for sonoff in linked_sonoff:
             database.add_device(sonoff)
         for sonoff in linked_sonoff:
-            assert database.search_device_name(sonoff)
+            assert database.search_device(sonoff)
 
     def test_device_remove(self, database, linked_sonoff):
         for sonoff in linked_sonoff:
             database.add_device(sonoff)
-            assert database.search_device_name(sonoff)
+            assert database.search_device(sonoff)
 
         assert len(database.get_devices()) == 5
 
@@ -49,7 +49,7 @@ class TestDatabase:
 
         database.remove_device(test_device)
         assert len(database.get_devices()) == 4
-        assert not database.search_device_name(test_device)
+        assert not database.search_device(test_device)
 
     def test_device_remove_double(self, database, linked_sonoff):
         for sonoff in linked_sonoff:
@@ -65,8 +65,8 @@ class TestDatabase:
 
         database.remove_device(test_device)
         assert len(database.get_devices()) == 4
-        assert not database.search_device_name(test_device)
+        assert not database.search_device(test_device)
 
         database.remove_device(test_device)
         assert len(database.get_devices()) == 4
-        assert not database.search_device_name(test_device)
+        assert not database.search_device(test_device)

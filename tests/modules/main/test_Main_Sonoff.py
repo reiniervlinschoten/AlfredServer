@@ -6,7 +6,7 @@ from tests.modules.data import keys
 from tests.modules.devices.SpoofSonoff import SpoofSonoff
 
 
-class TestMain:
+class TestMainSonoff:
     @pytest.fixture(scope="class")
     def data(self, main, mqtt, mqtt_log, linked_sonoff, unlinked_sonoff):
         spoof_sonoff = SpoofSonoff(host=keys.MQTT_BROKER, username=keys.MQTT_USERNAME, password=keys.MQTT_PASSWORD)
