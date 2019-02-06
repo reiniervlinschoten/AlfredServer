@@ -44,7 +44,8 @@ class Sonoff(Device):
 
             # Set the device to linked and sends a request to initialize its status
             self.linked = True
-            self.ask_status()
+            # Temporarily commented out, because ask_status needs a main, but main is not linked when Sonoff is created
+            # self.ask_status()
 
         # Handles problem when the device is not found on the network
         except RequestException:
