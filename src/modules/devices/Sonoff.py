@@ -34,7 +34,7 @@ class Sonoff(Device):
         try:
             # Try to connect to the Sonoff on the network and checks its name
             link = requests.get('http://{0}'.format(self.ip), timeout=1)
-            title = bs4.BeautifulSoup(link.content).title
+            title = bs4.BeautifulSoup(link.content, features='html.parser').title.strip('<title>').strip('</title.')
 
             # Check whether the given name is the name of the device
             if title != self.name:

@@ -22,7 +22,7 @@ class TestMainDatabase:
             sonoff_dict.pop('status', None)
             sonoff_dict.pop('linked', None)
 
-            database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/add/device", str(sonoff_dict))
             time.sleep(2)
             counter += 1
 
@@ -40,9 +40,9 @@ class TestMainDatabase:
             sonoff_dict.pop('status', None)
             sonoff_dict.pop('linked', None)
 
-            database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/add/device", str(sonoff_dict))
             time.sleep(2)
-            database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/add/device", str(sonoff_dict))
             time.sleep(2)
             counter += 1
             time.sleep(2)
@@ -62,7 +62,7 @@ class TestMainDatabase:
             sonoff_dict.pop('status', None)
             sonoff_dict.pop('linked', None)
 
-            database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/add/device", str(sonoff_dict))
             time.sleep(2)
             counter += 1
 
@@ -79,7 +79,7 @@ class TestMainDatabase:
             sonoff_dict.pop('status', None)
             sonoff_dict.pop('linked', None)
 
-            database_main.mqtt.send("/database/in/remove/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/remove/device", str(sonoff_dict))
             counter -= 1
             time.sleep(2)
 
@@ -98,7 +98,7 @@ class TestMainDatabase:
             sonoff_dict.pop('status', None)
             sonoff_dict.pop('linked', None)
 
-            database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/add/device", str(sonoff_dict))
             counter += 1
             time.sleep(2)
 
@@ -115,8 +115,8 @@ class TestMainDatabase:
             sonoff_dict.pop('status', None)
             sonoff_dict.pop('linked', None)
 
-            database_main.mqtt.send("/database/in/remove/device/", str(sonoff_dict))
-            database_main.mqtt.send("/database/in/remove/device/", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/remove/device", str(sonoff_dict))
+            database_main.mqtt.send("/database/in/remove/device", str(sonoff_dict))
             counter -= 1
             time.sleep(2)
 
