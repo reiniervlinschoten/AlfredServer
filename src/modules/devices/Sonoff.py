@@ -33,14 +33,14 @@ class Sonoff(Device):
         """Tries to find the named Sonoff device at the given ip"""
         try:
             # Try to connect to the Sonoff on the network and checks its name
-            link = requests.get('http://{0}'.format(self.ip), timeout=1)
-            title = bs4.BeautifulSoup(link.content, features='html.parser').title.strip('<title>').strip('</title.')
+            #link = requests.get('http://{0}'.format(self.ip), timeout=1)
+            # title = bs4.BeautifulSoup(link.content, features='html.parser').title
 
             # Check whether the given name is the name of the device
-            if title != self.name:
-                self.logger.debug('Given name: {0} and found name on the ip: {1} do not match. '
-                                  'Converting name to found name!'.format(self.name, title))
-                self.name = title
+            # if title != self.name:
+            # self.logger.debug('Given name: {0} and found name on the ip: {1} do not match. '
+            #                  'Converting name to found name!'.format(self.name, title))
+            # self.name = title
 
             # Set the device to linked and sends a request to initialize its status
             self.linked = True
