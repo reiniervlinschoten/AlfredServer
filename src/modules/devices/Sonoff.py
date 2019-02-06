@@ -37,10 +37,8 @@ class Sonoff(Device):
             title = bs4.BeautifulSoup(link.content, features='html.parser').title.strip('<title>').strip('</title>')
 
             # Check whether the given name is the name of the device
-            if title != self.name:
-                self.logger.debug('Given name: {0} and found name on the ip: {1} do not match. '
-                                  'Converting name to found name!'.format(self.name, title))
-                self.name = title
+            if self.name not in title:
+                self.logger.debug('Given name: {0} and found name on the ip: {1} do not match.'.format(self.name, title))
             else:
                 self.logger.info('Names do match')
 
