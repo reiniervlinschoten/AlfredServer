@@ -125,3 +125,10 @@ class TestMainDatabase:
 
             assert len(database_main.database.get_devices()) == counter
             assert not database_main.database.search_device(sonoff)
+
+    def test_populate_devices(self, database_main, linked_sonoff):
+        assert len(database_main.devices) == 0
+        for device in linked_sonoff:
+            database_main.database.add_device(device)
+        database_main.populate_devices()
+        assert len(database_main.database.get_devices()) == len(linked_sonoff)

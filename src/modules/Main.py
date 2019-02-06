@@ -1,4 +1,5 @@
 from src.modules.communicationcentre.messagehandler import handle_message
+from src.modules.devices.Sonoff import Sonoff
 from src.modules.logging.logger import setup_logger
 
 
@@ -12,6 +13,13 @@ class Main:
     def setup_mqtt(self, mqtt_object):
         mqtt_object.set_main(self)
         self.mqtt = mqtt_object
+
+    def populate_devices(self):
+        devices = self.database.get_devices()
+        for device in devices:
+            name, device_type, location, ip, brand = device
+            if brand == "sonoff":
+                self.add_device(Sonoff(name, device_type, location, ip, brand))
 
     def add_device(self, device_object):
         if device_object not in self.devices:
