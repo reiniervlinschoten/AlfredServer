@@ -33,6 +33,7 @@ def handle_message(topic, message, main):
         if "status" in topic[1]:
             set_device_toggle(main, message, topic)
 
+
 def handle_database(main, message, topic):
     if topic[2] == "add":
         device = create_device(message)
@@ -40,6 +41,7 @@ def handle_database(main, message, topic):
     elif topic[2] == "remove":
         device = create_device(message)
         main.remove_device(device)
+
 
 def create_device(message):
     message = ast.literal_eval(message)
@@ -112,13 +114,10 @@ def set_device(message, target_device, topic):
 def find_device(main, topic):
     # Find the proper device that has been targeted
     target_name = topic[3]
-    target_device = None
     for device in main.devices:
         if device.get_name() == target_name:
-            target_device = device
-            break
-        raise DeviceNotFoundException("Device was not found linked in main.")
-    return target_device
+            return device
+    raise DeviceNotFoundException("Device was not found linked in main.")
 
 
 def return_devices(main):

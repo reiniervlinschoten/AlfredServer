@@ -41,7 +41,9 @@ class TestMainDatabase:
             sonoff_dict.pop('linked', None)
 
             database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            time.sleep(2)
             database_main.mqtt.send("/database/in/add/device/", str(sonoff_dict))
+            time.sleep(2)
             counter += 1
             time.sleep(2)
 

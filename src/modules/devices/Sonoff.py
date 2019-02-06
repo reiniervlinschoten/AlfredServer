@@ -18,7 +18,7 @@ def _error_decorator(func):
             error_message = "{0} ({1}) at {2} in {3} could not be reached".format(self.name,
                                                                                   self.device_type,
                                                                                   self.ip,
-                                                                                  self.group)
+                                                                                  self.location)
             self.logger.debug(error_message)
             raise DeviceNotLinkedException(error_message)
 

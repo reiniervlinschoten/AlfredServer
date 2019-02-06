@@ -23,7 +23,7 @@ def mqtt_log(mqtt):
     yield log
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def linked_sonoff():
     linked_sonoff = []
     for i in range(0, 5):  # Spoof working Sonoff
@@ -37,7 +37,7 @@ def linked_sonoff():
     yield linked_sonoff
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def unlinked_sonoff():
     unlinked_sonoff = []
     for i in range(5, 10):  # Spoof working Sonoff
@@ -50,7 +50,7 @@ def unlinked_sonoff():
     yield unlinked_sonoff
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def same_sonoff():
     same_sonoff = []
     for i in range(0, 5):
@@ -63,7 +63,7 @@ def same_sonoff():
     yield same_sonoff
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def same_name_sonoff():
     same_name_sonoff = []
     for i in range(0, 5):
@@ -76,7 +76,7 @@ def same_name_sonoff():
     yield same_name_sonoff
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def same_ip_sonoff():
     same_ip_sonoff = []
     for i in range(0, 5):
